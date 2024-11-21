@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { IProjects } from "@/lib/appwrite";
 import db from "@/lib/database";
 
@@ -24,6 +24,10 @@ interface ICard {
 }
 
 const ProjectCard = ({ project_name, description, image_url, delay = 0 }: ICard) => {
+  const [imgLoading, setImgLoading] = useState(true)
+  setTimeout(() => {
+    setImgLoading(false)
+  }, 1500)
   return (
     <motion.div
       initial={{ opacity: 0, x: -100 }}
@@ -42,13 +46,22 @@ const ProjectCard = ({ project_name, description, image_url, delay = 0 }: ICard)
           <CardDescription className="ml-3 text-lg">{description}</CardDescription>
         </CardHeader>
         <CardContent className="flex-grow rounded-md object-contain">
-          <Image
-            src={image_url}
-            alt={project_name}
-            width={350}
-            height={350}
-            className="rounded-md w-full md:h-[600px] mx-auto"
-          />
+
+          <div className="relative">
+            {imgLoading ? (
+              <div className="flex justify-center items-center h-[400px]">
+                <Loader2 className="h-18 w-18 animate-spin" />
+              </div>
+            ) : (
+              <Image
+                src={image_url}
+                alt={project_name}
+                width={350}
+                height={350}
+                className="rounded-md w-full md:h-[600px] mx-auto"
+              />
+            )}
+          </div>
         </CardContent>
       </Card>
     </motion.div>
